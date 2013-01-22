@@ -27,11 +27,13 @@ insert pretty pic
 
 ### Configuration
 
-Configuration is specified in a yml file within your application ("config/performance_test.yml").
+Configuration is specified in a yaml file within your application ("config/performance_test.yml").
 
 Note that we currently assume a postgresql database.
 
-Example config:
+If the environment variables `APPLICATION_VERSION` and/or `BUILD_NUMBER` are defined, they will be combined and stored with the test results.
+
+Example yaml config:
 
 ```
 ---
@@ -44,25 +46,23 @@ db_options:
   password: "password"
 tests:
 - name:      Example test 1
-  feature:   features/christo/example_performance1.feature
+  feature:   features/example_performance1.feature
   profile:   performance_test
   threshold: 300000
 - name:      Example test 2
-  feature:   features/christo/example_performance2.feature
+  feature:   features/example_performance2.feature
   profile:   performance_test
   threshold: 300000
 ```
 
 The test parameters used are:
 ```
-base-url:  ???
 number-of-test-runs: how many times to run each test
 parallel-tasks:      how many tests to run in parallel
 db_options:          connection settings to save the results
 
 tests:
   name:      arbitrary name for the test
-  type:      currently only supports "Cucumber"
   feature:   path to the feature that will be run (relative to the app root)
   profile:   the cucumber profile (defined by the target app, within cucumber.yml)
   threshold: test threshold in milliseconds
