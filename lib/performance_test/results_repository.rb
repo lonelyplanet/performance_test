@@ -11,6 +11,7 @@ class ResultsRepository
       puts "problem opening db connection: #{e}"
       puts e.backtrace
     end
+    ensure_results_table
   end
 
   def save results
@@ -29,13 +30,19 @@ class ResultsRepository
   def save_result(result)
     @conn.exec <<-SQL
       insert into performance_test_results
-      (name, actual_time_taken, timestamp, expected_time_taken)
-      values ('#{CGI.unescape(result[:name])}', #{result[:time_taken]}, '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}',#{result[:test]['threshold']});
+      (name, actual_time_taken, timestamp, expected_time_taken, git_hash, application_version)
+      values (
+        '#{CGI.unescape(result[:name])}',
+        #{result[:time_taken]},
+        '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}',
+        #{result[:test]['threshold']},
+        '#{result[:git_hash]}',
+        '#{result[:application_version]}');
     SQL
   end
 
-  def create_results_table
-    puts 'creating performance_test_results...'
+  def ensure_results_table
+    puts 'ensuring performance_test_results table...'
     @conn.exec <<-SQL
       create table if not exists performance_test_results (
         name varchar(100),
@@ -43,7 +50,7 @@ class ResultsRepository
         expected_time_taken int,
         timestamp timestamp,
         git_hash varchar(50),
-        atlas_version varchar(20),
+        application_version varchar(20),
         browser varchar(25),
         client_platform varchar(25)
       );
