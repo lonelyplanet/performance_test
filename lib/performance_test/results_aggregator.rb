@@ -1,0 +1,23 @@
+class ResultsAggregator
+
+	def self.aggregate(results)
+		grouped_tests_results = results.group_by { |r| r[:test] }
+		aggregates = []
+		grouped_tests_results.each do |test, test_results|
+			feature_pass = test_results.all? { |result| result[:exitstatus] == 0 }
+			test_timings = test_results.map { |result| result[:time_taken] }
+			aggregates << {
+				:name => test['name'],
+				:time_taken => find_percentile(test_timings, 90),
+				:feature_pass => feature_pass,
+				:test => test
+			}
+		end
+		aggregates
+	end
+
+	def self.find_percentile(list, percentile)
+		list.sort[(list.size * percentile / 100.0).round - 1]
+	end
+
+end

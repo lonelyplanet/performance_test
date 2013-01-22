@@ -1,0 +1,1 @@
+require 'performance_test/performance_test_runner'

@@ -1,0 +1,8 @@
+# NB: This is the cucumber config yaml for the performance_test gem integration test
+
+<%
+require 'fileutils'
+FileUtils.mkdir_p(File.join 'target', 'reports')
+%>
+
+performance_test: --require features/step_definitions --format pretty --format html --out target/reports/integration-test.html

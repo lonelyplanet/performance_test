@@ -1,0 +1,19 @@
+---
+number-of-test-runs: 3
+parallel-tasks: 2
+db_options:
+  host: "db.hostname"
+  dbname: "test_results"
+  user: "user"
+  password: "password"
+tests:
+- name : Example test
+  type : Cucumber
+  feature : features/christo/example_performance.feature
+  profile: performance_test
+  threshold : 300000
+- name : Example test #2
+  type : Cucumber
+  feature : features/christo/example_performance2.feature
+  profile: performance_test
+  threshold : 300000
