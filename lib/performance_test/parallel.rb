@@ -52,7 +52,6 @@ class Parallel
           put_w_time "#{GREEN}[#{command[:name]}] finished. Elapsed time was #{distance_of_time_to_now(command[:start])}.#{RESET}"
         else
           put_w_time "#{RED}[#{command[:name]}] failed. Elapsed time was #{distance_of_time_to_now(command[:start])}. Output below.#{RESET}\n\n"
-          puts command[:output]
           puts "\n\n"
         end
         puts_still_running

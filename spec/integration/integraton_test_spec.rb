@@ -1,16 +1,15 @@
 require 'spec_helper'
-require 'debugger'
 
 describe PerformanceTest do
 
-  FIXTURE_CONFIG_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures', 'integration_test.yml')
-
   before(:each) do
+
     repository = double('repository')
     repository.should_receive(:save).once
     ResultsRepository.should_receive(:new).and_return(repository)
 
-    @runner = PerformanceTestRunner.new FIXTURE_CONFIG_PATH
+    fixtureConfigPath = File.join(File.dirname(__FILE__), '..', 'fixtures', 'integration_test.yml')
+    @runner = PerformanceTestRunner.new fixtureConfigPath
     @runner.run
   end
 

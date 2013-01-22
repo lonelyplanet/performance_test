@@ -1,12 +1,10 @@
 require 'spec_helper'
-require 'debugger'
 
 describe PerformanceTestRunner do
 
-  FIXTURE_CONFIG_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures', 'example_config.yml')
-
   before do
-    @runner = PerformanceTestRunner.new FIXTURE_CONFIG_PATH
+    fixtureConfigPath = File.join(File.dirname(__FILE__), '..', 'fixtures', 'example_config.yml')
+    @runner = PerformanceTestRunner.new fixtureConfigPath
   end
 
   describe '#load_config' do

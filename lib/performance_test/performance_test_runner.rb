@@ -4,7 +4,6 @@ require 'performance_test/results_repository'
 require 'performance_test/parallel'
 require 'performance_test/results_aggregator'
 require 'yaml'
-require 'debugger'
 
 class PerformanceTestRunner
 

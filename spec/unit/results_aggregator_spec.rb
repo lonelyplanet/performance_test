@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe ResultsAggregator do
 
   describe '#find_percentile' do
