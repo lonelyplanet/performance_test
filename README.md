@@ -22,8 +22,7 @@ If any of the aggregated timings exceed their threshold, the rake task will retu
 
 ### Architecture
 
-insert pretty pic
-
+![all architects are frustrated artists](./PerformanceTestGem.png)
 
 ### Configuration
 
