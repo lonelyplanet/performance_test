@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Drawing Units="cm" PPU="50.3936996459961" Major="1" Subdivisions="10" ViewPositionX="142.251977920532" ViewPositionY="404.811025619507" ActiveLayer="0" Margin="12.7,12.7,12.7,12.7" MarginUnits="mm" PrintSize="215.9,279.4">
+  <Layer Name="Layer 1" Visible="True" Locked="False">
+    <Rectangle X="1.5" Y="-3" Width="13.5" Height="9.5" FillColor="#FFFFFF" Stroked="False" />
+    <Rectangle X="8" Y="-2.5" Width="6.5" Height="8.5" Filled="False" />
+    <Group>
+      <Rectangle X="11.5" Y="1" Width="2.5" Height="1.5" Filled="False" />
+      <Text X="11.5" Y="1" Width="2.5" Height="1.5" Filled="False" Stroked="False" Text="Windows&#xA;Firefox&#xA;v18" FontSize="14" FontName="Al Bayan" />
+    </Group>
+    <Group>
+      <Rectangle X="8.65676263091384" Y="0.97125606888993" Width="2.5" Height="1.5" Filled="False" />
+      <Text X="8.65676263091384" Y="0.97125606888993" Width="2.5" Height="1.5" Filled="False" Stroked="False" Text="Windows&#xA;Chrome v24.0.1312.52" FontSize="14" FontName="Al Bayan" />
+    </Group>
+    <Group>
+      <Rectangle X="8.5" Y="-1.5" Width="2.5" Height="1.5" Filled="False" />
+      <Text X="8.5" Y="-1.5" Width="2.5" Height="1.5" Filled="False" Stroked="False" Text="Mac&#xA;Chrome v24.0.1312.52" FontSize="14" FontName="Al Bayan" />
+    </Group>
+    <Text X="8.5" Y="3.94046874865163" Width="2.5" Height="0.666989568677904" Filled="False" Stroked="False" Text="Selenium Cluster" FontSize="14" FontName="Al Bayan" />
+    <Group>
+      <Rectangle X="11.5" Y="-1.5" Width="2.5" Height="1.5" Filled="False" />
+      <Text X="11.5" Y="-1.5" Width="2.5" Height="1.5" Filled="False" Stroked="False" Text="Mac&#xA;Firefox&#xA;v18" FontSize="14" FontName="Al Bayan" />
+    </Group>
+    <Group>
+      <Rectangle X="1.99953116505276" Y="-2.48078136281353" Width="5.00046883494724" Height="2.48078136281353" Filled="False" />
+      <Text X="2" Y="-2.5" Width="2.5" Height="1" Filled="False" Stroked="False" Text="Jenkins Agent" HorizontalAlignment="LEFT" FontSize="14" Margin="10" FontName="Al Bayan" />
+      <Group>
+        <Rectangle X="2.5" Y="-1" Width="4" Height="0.5" Filled="False" />
+        <Text X="2.50694206521737" Y="-1.11819833546372" Width="3.99305793478263" Height="0.786928728761251" Filled="False" Stroked="False" Text="Performance Test Runner" HorizontalAlignment="LEFT" FontSize="14" Margin="10" FontName="Al Bayan" />
+        <Text X="3.94812494786307" Y="-0.686718788203784" Width="0.03209106517998" Height="0.0165106204911492" Filled="False" Stroked="False" Text="Performance Test Runner" FontSize="14" FontName="Al Bayan" />
+      </Group>
+    </Group>
+    <Rectangle X="2" Y="3.5" Width="5" Height="2.5" Filled="False" />
+    <Group>
+      <Rectangle X="4" Y="4" Width="2.5" Height="0.5" Filled="False" />
+      <Text X="4.02357720875498" Y="3.85916988471058" Width="2.47642279124502" Height="0.819423869334523" Filled="False" Stroked="False" Text="Cucumber Test" HorizontalAlignment="LEFT" FontSize="14" Margin="10" FontName="Al Bayan" />
+    </Group>
+    <Text X="2" Y="5" Width="3.5" Height="1" Filled="False" Stroked="False" Text="Target Application" HorizontalAlignment="LEFT" FontSize="14" Margin="10" FontName="Al Bayan" />
+    <Group>
+      <Group>
+        <Oval X="2.3809159990995" Y="2.02968561299328" Width="1.5" Height="0.5" FillColor="#FFFFFF" />
+        <Rectangle X="2.3809159990995" Y="0.962341884117717" Width="1.5" Height="1.29305488415723" FillColor="#FFFFFF" Stroked="False" />
+        <Oval X="2.40075974954896" Y="0.720310639960647" Width="1.5" Height="0.5" FillColor="#FFFFFF" />
+        <Line X1="3.89958802174589" Y1="0.986404429962259" X2="3.87807770631728" Y2="2.28423221814682" />
+        <Line X1="2.39704404240112" Y1="0.985861827410906" X2="2.38983517993315" Y2="2.32004398653607" />
+      </Group>
+      <Text X="2.13792906894762" Y="2.603233011915" Width="2" Height="0.5" Filled="False" Stroked="False" Text="Postgresql&#xA;" FontSize="14" FontName="Al Bayan" />
+    </Group>
+    <Line X1="6.75" Y1="4.23812500539348" X2="8.46913641412686" Y2="4.23812500539348" EndDecoration="ARROW" />
+    <Line X1="5.24593748292066" Y1="-0.30103889312713" X2="5.24593748292066" Y2="3.8735138420424" EndDecoration="ARROW" />
+    <Line X1="3.18593739662505" Y1="-0.282343858318965" X2="3.18593739662505" Y2="1.07213313504521" EndDecoration="ARROW" />
+  </Layer>
+</Drawing>
