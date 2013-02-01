@@ -19,7 +19,9 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'rake'
   gem.add_runtime_dependency 'pg'
 
-  gem.add_development_dependency 'rspec'
+  gem.add_runtime_dependency 'diff-lcs', '~> 1.1.3'
+
+  gem.add_development_dependency 'rspec', '~> 2.12.0'
   gem.add_development_dependency 'debugger'
   gem.add_development_dependency 'cucumber'
 end
