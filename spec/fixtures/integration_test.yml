@@ -1,5 +1,4 @@
 ---
-number-of-test-runs: 3
 parallel-tasks: 2
 db_options:
   host:     "hostname"
@@ -8,14 +7,17 @@ db_options:
   password: "password"
 tests:
 - name : Fail threshold test
+  number-of-test-runs: 2
   feature : features/fixtures/test_to_run.feature
   profile: performance_test
   threshold : 1
 - name : Pass threshold test
+  number-of-test-runs: 3
   feature : features/fixtures/test_to_run.feature
   profile: performance_test
   threshold : 5000
 - name : Return non-zero error code
+  number-of-test-runs: 1
   feature : features/fixtures/non_existent.feature
   profile: performance_test
   threshold : 300000

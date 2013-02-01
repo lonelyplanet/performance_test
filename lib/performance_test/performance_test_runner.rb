@@ -36,10 +36,10 @@ class PerformanceTestRunner
   private
 
   def prepare_tests
-    number_of_test_runs = @config['number-of-test-runs']
-
     @config['tests'].map do |test|
+      number_of_test_runs = test['number-of-test-runs']
       (1..number_of_test_runs).map do |i|
+        puts "bundle exec cucumber --require #{STEPS_PATH} -p #{test['profile']} #{test['feature']} 2>&1"
         {
           name: "#{test['name']} - Run #{i}",
           cmd: "bundle exec cucumber --require #{STEPS_PATH} -p #{test['profile']} #{test['feature']} 2>&1",
@@ -50,13 +50,19 @@ class PerformanceTestRunner
   end
 
   def run_tests
+    time_taken_re = /TIME_TAKEN ([0-9]+)MS/
     Parallel.new(@tests, @config['parallel-tasks'].to_i).run
 
     log_file = File.open("run.log", "w")
     @tests.collect do |test|
       response = test[:output]
-      test[:time_taken] = /TIME_TAKEN ([0-9]+)MS/.match(response)[1].to_i if test[:exitstatus] == 0
-      log_file << "#{test[:cmd]}\n#{test[:output]}\n#{'-'*100}\n"
+      if response =~ time_taken_re
+        test[:time_taken] = time_taken_re.match(response)[1].to_i if test[:exitstatus] == 0
+        log_file << "#{test[:cmd]}\n#{test[:output]}\n#{'-'*100}\n"
+      else
+        puts "ERROR: No 'TIME_TAKEN' found in cucumber output. Have you included the 'Then I stop the timer' step?\nThe cucumber output was:"
+        puts response
+      end
     end
     log_file.close
 

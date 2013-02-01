@@ -23,8 +23,14 @@ describe PerformanceTestRunner do
   end
 
   describe '#prepare_tests' do
-    it 'returns n test_instances per test, where n is the number-of-test-runs parameter from the yml' do
-      @runner.tests.length.should == @runner.config['number-of-test-runs'].to_i * @runner.config['tests'].length
+    it 'returns 4 instances of test "Example test"' do
+      tests = @runner.tests.select {|test| test[:test]["name"] == "Example test"}
+      tests.length.should == 4
+    end
+
+    it 'returns 2 instances of test "Example test 2"' do
+      tests = @runner.tests.select {|test| test[:test]["name"] == "Example test 2"}
+      tests.length.should == 2
     end
 
     it 'returns test_instances with the correct keys' do

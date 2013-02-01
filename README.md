@@ -36,7 +36,6 @@ Example yaml config:
 
 ```
 ---
-number-of-test-runs: 3
 parallel-tasks:      2
 db_options:
   host:     "db.results.abc"
@@ -45,10 +44,12 @@ db_options:
   password: "password"
 tests:
 - name:      Example test 1
+  number-of-test-runs: 10
   feature:   features/example_performance1.feature
   profile:   performance_test
   threshold: 300000
 - name:      Example test 2
+  number-of-test-runs: 20
   feature:   features/example_performance2.feature
   profile:   performance_test
   threshold: 300000
@@ -56,15 +57,15 @@ tests:
 
 The test parameters used are:
 ```
-number-of-test-runs: how many times to run each test
 parallel-tasks:      how many tests to run in parallel
 db_options:          connection settings to save the results
 
 tests:
-  name:      arbitrary name for the test
-  feature:   path to the feature that will be run (relative to the app root)
-  profile:   the cucumber profile (defined by the target app, within cucumber.yml)
-  threshold: test threshold in milliseconds
+  name:                 arbitrary name for the test
+  number-of-test-runs:  how many times to run the test
+  feature:              path to the feature that will be run (relative to the app root)
+  profile:              the cucumber profile (defined by the target app, within cucumber.yml)
+  threshold:            test threshold in milliseconds
 ```
 
 
