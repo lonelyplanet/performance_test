@@ -71,8 +71,12 @@ class PerformanceTestRunner
 
   def check_results_against_thresholds(results)
     results.each do |result|
-      result[:threshold_pass] = result[:time_taken] && result[:time_taken] < result[:test]['threshold']
+      result[:threshold_pass] = result[:time_taken] && compatible_with_threshold(result[:time_taken], result[:test]['threshold'])
     end
+  end
+
+  def compatible_with_threshold(time_taken, threshold)
+    time_taken > (threshold * 0.5) and time_taken < threshold 
   end
 
   def results_pass?(results)
