@@ -11,7 +11,7 @@ class PerformanceTestRunner
 
   STEPS_PATH = File.absolute_path(File.join(File.dirname(__FILE__),'performance_test_steps.rb'))
   CONFIG_PATH = File.absolute_path(File.join('config', 'performance_test.yml'))
-  LOG_PATH = "tmp/performance_test.log"
+  LOWER_THRESHOLD = 0.3
 
   def initialize(config_path = CONFIG_PATH)
     if !File.exists? config_path
@@ -28,12 +28,24 @@ class PerformanceTestRunner
     run_tests
     @results = ResultsAggregator.aggregate @tests
     check_results_against_thresholds @results
+
+    print_seperator
+    puts "RAW RESULTS"
+    puts @results
+
+    print_seperator
+    puts "SAVING RESULTS"
     results_repo = ResultsRepository.new @config['db_options']
     results_repo.save @results
-    results_pass? @results
+
+    set_exit_code @results
   end
 
   private
+
+  def print_seperator
+    puts "#{'-'*100}\n"
+  end
 
   def prepare_tests
     @config['tests'].map do |test|
@@ -51,39 +63,60 @@ class PerformanceTestRunner
   def run_tests
     time_taken_re = /TIME_TAKEN ([0-9]+)MS/
 
-    puts "Opening log file at #{LOG_PATH}\n\n"
-    directory_name = File.dirname(LOG_PATH)
-    Dir.mkdir(directory_name) unless File.exists?(directory_name)
-    log_file = File.open(LOG_PATH, "w")
-
     Parallel.new(@tests, @config['parallel-tasks'].to_i).run
 
     @tests.collect do |test|
       response = test[:output]
-      log_file << "#{test[:cmd]}\n#{test[:output]}\n#{'-'*100}\n"
+
+      print_seperator
+      puts test[:cmd]
+
       if response =~ time_taken_re
         test[:time_taken] = time_taken_re.match(response)[1].to_i if test[:exitstatus] == 0
+        puts "Time taken was #{test[:time_taken]}ms"
       else
-        puts "ERROR: No 'TIME_TAKEN' found in cucumber output for '#{test[:name]}'. Have you included the 'Then I stop the timer' step?\nThe cucumber output was:"
-        puts response
+        puts "ERROR: No 'TIME_TAKEN' found in cucumber output for '#{test[:name]}'. Have you included the 'Then I stop the timer' step?"
       end
+
+      puts response
+
     end
-    log_file.close
 
     @tests
   end
 
   def check_results_against_thresholds(results)
+    print_seperator
+    puts "AGGREGATED RESULTS"
+
     results.each do |result|
-      result[:threshold_pass] = result[:time_taken] && compatible_with_threshold(result[:time_taken], result[:test]['threshold'])
+      time_taken = result[:time_taken]
+      threshold = result[:test]['threshold'].to_i
+
+      if !time_taken
+        result[:threshold_pass] = false
+        puts "Test '#{result[:name]} failed because no timing was recorded"
+      elsif time_taken < (threshold * LOWER_THRESHOLD)
+        result[:threshold_pass] = false
+        puts "Test '#{result[:name]}' failed because its aggregate time taken (#{time_taken}ms) was less than #{LOWER_THRESHOLD} times the threshold (#{threshold * LOWER_THRESHOLD}ms)"
+      elsif time_taken > threshold 
+        result[:threshold_pass] = false
+        puts "Test '#{result[:name]}' failed because its aggregate time taken (#{time_taken}ms) was greater than the threshold (#{threshold}ms)"
+      else
+        result[:threshold_pass] = true
+        puts "Test '#{result[:name]}' passed"
+      end
     end
   end
 
-  def compatible_with_threshold(time_taken, threshold)
-    time_taken > (threshold * 0.5) and time_taken < threshold 
-  end
-
-  def results_pass?(results)
-    results.all? {|r| r[:threshold_pass] && r[:feature_pass]}
+  def set_exit_code(results)
+    print_seperator
+    if results.all? {|r| r[:threshold_pass] && r[:feature_pass]} 
+      puts "Final result: All tests passed"
+      exit 0
+    else
+      puts "Final result: Some tests failed"
+      exit 1
+    end
   end
 end
