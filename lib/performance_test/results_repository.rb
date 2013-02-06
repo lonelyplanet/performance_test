@@ -1,6 +1,7 @@
 require 'pg'
 require 'json'
 require 'cgi'
+require 'socket'
 
 class ResultsRepository
 
@@ -12,6 +13,7 @@ class ResultsRepository
       puts e.backtrace
     end
     ensure_results_table
+    @hostname = Socket.gethostname
   end
 
   def save results
@@ -30,15 +32,20 @@ class ResultsRepository
   def save_result(result)
     @conn.exec <<-SQL
       insert into performance_test_results
-      (name, actual_time_taken, timestamp, expected_time_taken, git_hash, application_version)
+      (name, actual_time_taken, timestamp, expected_time_taken, git_hash, application_version, hostname)
       values (
         '#{CGI.unescape(result[:name])}',
         #{result[:time_taken]},
         '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}',
         #{result[:test]['threshold']},
         '#{result[:git_hash]}',
-        '#{result[:application_version]}');
+        '#{result[:application_version]}',
+        '#{@hostname}');
     SQL
+  end
+
+  def hostname
+
   end
 
   def ensure_results_table
@@ -52,7 +59,8 @@ class ResultsRepository
         git_hash varchar(50),
         application_version varchar(20),
         browser varchar(25),
-        client_platform varchar(25)
+        client_platform varchar(25),
+        hostname varchar(100)
       );
     SQL
   end
