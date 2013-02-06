@@ -31,6 +31,7 @@ class Parallel
       command = @commands.shift
       if !command.nil?
         @task_number += 1
+        puts "Executing: #{command[:cmd]}"
         out = IO.popen(command[:cmd])
         put_w_time "[#{command[:name]}] started; #{@commands.length} jobs left to start."
         command[:start] = Time.now
@@ -51,8 +52,7 @@ class Parallel
         if status.success?
           put_w_time "#{GREEN}[#{command[:name]}] finished. Elapsed time was #{distance_of_time_to_now(command[:start])}.#{RESET}"
         else
-          put_w_time "#{RED}[#{command[:name]}] failed. Elapsed time was #{distance_of_time_to_now(command[:start])}. Output below.#{RESET}\n\n"
-          puts "\n\n"
+          put_w_time "#{RED}[#{command[:name]}] failed. Elapsed time was #{distance_of_time_to_now(command[:start])}.#{RESET}\n\n"
         end
         puts_still_running
         start_some_children

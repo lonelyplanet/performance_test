@@ -8,7 +8,7 @@ class ResultsRepository
     begin
       @conn = PGconn.new options
     rescue => e
-      puts "problem opening db connection: #{e}"
+      puts "ERROR: Problem opening db connection: #{e}"
       puts e.backtrace
     end
     ensure_results_table
@@ -16,11 +16,11 @@ class ResultsRepository
 
   def save results
     begin
-      puts "saving test results to db..."
-      results.each {|r| save_result(r) if r[:feature_pass] }
-      puts "test results saved."
+      puts "Saving test results to the database"
+      results.each {|r| save_result(r) if r[:feature_pass] and r[:time_taken] }
+      puts "Test results saved."
     rescue => e
-      puts "problem saving performance-test results: #{e}"
+      puts "ERROR: Problem saving performance-test results: #{e}"
       puts e.backtrace
     end
   end
@@ -42,7 +42,7 @@ class ResultsRepository
   end
 
   def ensure_results_table
-    puts 'ensuring performance_test_results table...'
+    puts 'Ensuring performance_test_results table exists'
     @conn.exec <<-SQL
       create table if not exists performance_test_results (
         name varchar(100),
