@@ -14,6 +14,7 @@ class ResultsRepository
     end
     ensure_results_table
     @hostname = Socket.gethostname
+    @timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
   end
 
   def save results
@@ -36,7 +37,7 @@ class ResultsRepository
       values (
         '#{CGI.unescape(result[:name])}',
         #{result[:time_taken]},
-        '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}',
+        '#{@timestamp}',
         #{result[:test]['threshold']},
         '#{result[:git_hash]}',
         '#{result[:application_version]}',
