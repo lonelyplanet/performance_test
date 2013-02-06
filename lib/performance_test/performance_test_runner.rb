@@ -52,6 +52,8 @@ class PerformanceTestRunner
     time_taken_re = /TIME_TAKEN ([0-9]+)MS/
 
     puts "Opening log file at #{LOG_PATH}\n\n"
+    directory_name = File.dirname(LOG_PATH)
+    Dir.mkdir(directory_name) unless File.exists?(directory_name)
     log_file = File.open(LOG_PATH, "w")
 
     Parallel.new(@tests, @config['parallel-tasks'].to_i).run
@@ -62,7 +64,7 @@ class PerformanceTestRunner
       if response =~ time_taken_re
         test[:time_taken] = time_taken_re.match(response)[1].to_i if test[:exitstatus] == 0
       else
-        puts "ERROR: No 'TIME_TAKEN' found in cucumber output. Have you included the 'Then I stop the timer' step?\nThe cucumber output was:"
+        puts "ERROR: No 'TIME_TAKEN' found in cucumber output for '#{test[:name]}'. Have you included the 'Then I stop the timer' step?\nThe cucumber output was:"
         puts response
       end
     end
