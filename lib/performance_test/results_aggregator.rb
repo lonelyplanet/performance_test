@@ -21,7 +21,7 @@ class ResultsAggregator
 	end
 
 	def self.find_percentile(list, percentile)
-		list.sort[(list.size * percentile / 100.0).round - 1]
+		list.sort[((list.size - 1) * percentile / 100.0).round]
 	end
 
 	def self.app_version
