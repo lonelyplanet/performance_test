@@ -10,7 +10,7 @@ class ResultsAggregator
 			test_timings = test_results.map { |result| result[:time_taken] }
 			aggregates << {
 				:name => test['name'],
-				:time_taken => find_percentile(test_timings, 90),
+				:time_taken => find_percentile(test_timings, 50),
 				:feature_pass => feature_pass,
         :git_hash => git_hash,
         :application_version => app_version,
