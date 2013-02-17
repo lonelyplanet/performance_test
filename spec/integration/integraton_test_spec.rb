@@ -10,6 +10,7 @@ describe PerformanceTest do
 
     fixtureConfigPath = File.join(File.dirname(__FILE__), '..', 'fixtures', 'integration_test.yml')
     @runner = PerformanceTestRunner.new fixtureConfigPath
+    @runner.should_receive(:set_exit_code)
     @runner.run
   end
 

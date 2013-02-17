@@ -50,20 +50,4 @@ describe PerformanceTestRunner do
     end
   end
 
-  describe '#compatible_with_threshold' do
-
-    it 'returns true if the time_taken is just under the threshold' do
-      @runner.send(:compatible_with_threshold, 1000,1100).should be_true
-    end
-
-    it 'returns false if the time_taken is less than half the threshold' do
-      @runner.send(:compatible_with_threshold, 500,1100).should be_false
-    end
-
-    it 'returns false if the time_taken is greater than the threshold' do
-      @runner.send(:compatible_with_threshold, 1200,1100).should be_false
-    end
-
-  end
-
 end

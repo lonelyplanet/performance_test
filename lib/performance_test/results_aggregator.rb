@@ -8,6 +8,7 @@ class ResultsAggregator
 		grouped_tests_results.each do |test, test_results|
 			feature_pass = test_results.all? { |result| result[:exitstatus] == 0 }
 			test_timings = test_results.map { |result| result[:time_taken] }
+			test_timings = [0] if test_timings.nil?
 			aggregates << {
 				:name => test['name'],
 				:time_taken => find_percentile(test_timings, 50),
