@@ -38,7 +38,7 @@ class PerformanceTestRunner
     results_repo = ResultsRepository.new @config['db_options']
     results_repo.save @results
 
-    set_exit_code @results
+    handle_results @results
   end
 
   private
@@ -99,7 +99,7 @@ class PerformanceTestRunner
       elsif time_taken < (threshold * LOWER_THRESHOLD)
         result[:threshold_pass] = false
         puts "Test '#{result[:name]}' failed because its aggregate time taken (#{time_taken}ms) was less than #{LOWER_THRESHOLD} times the threshold (#{threshold * LOWER_THRESHOLD}ms)"
-      elsif time_taken > threshold 
+      elsif time_taken > threshold
         result[:threshold_pass] = false
         puts "Test '#{result[:name]}' failed because its aggregate time taken (#{time_taken}ms) was greater than the threshold (#{threshold}ms)"
       else
@@ -109,14 +109,12 @@ class PerformanceTestRunner
     end
   end
 
-  def set_exit_code(results)
+  def handle_results(results)
     print_seperator
-    if results.all? {|r| r[:threshold_pass] && r[:feature_pass]} 
+    if results.all? {|r| r[:threshold_pass] && r[:feature_pass]}
       puts "Final result: All tests passed"
-      exit 0
     else
-      puts "Final result: Some tests failed"
-      exit 1
+      abort "Final result: Some tests failed"
     end
   end
 end
