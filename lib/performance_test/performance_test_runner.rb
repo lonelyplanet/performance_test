@@ -9,7 +9,6 @@ class PerformanceTestRunner
 
   attr_accessor :config, :tests, :results
 
-  STEPS_PATH = File.absolute_path(File.join(File.dirname(__FILE__),'performance_test_steps.rb'))
   CONFIG_PATH = File.absolute_path(File.join('config', 'performance_test.yml'))
   LOWER_THRESHOLD = 0.3
 
@@ -53,7 +52,7 @@ class PerformanceTestRunner
       (1..number_of_test_runs).map do |i|
         {
           name: "#{test['name']} - Run #{i}",
-          cmd: "bundle exec cucumber --require #{STEPS_PATH} -p #{test['profile']} #{test['feature']} 2>&1",
+          cmd: "bundle exec cucumber -p #{test['profile']} #{test['feature']} 2>&1",
           test: test
         }
       end
