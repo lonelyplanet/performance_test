@@ -33,10 +33,14 @@ class PerformanceTestRunner
     puts @results
 
     print_seperator
-    puts "SAVING RESULTS"
-    results_repo = ResultsRepository.new @config['db_options']
-    results_repo.save @results
 
+    if ENV['NO_DB_RESULTS']
+      puts "results NOT saved to db"
+    else
+      puts "SAVING RESULTS"
+      results_repo = ResultsRepository.new @config['db_options']
+      results_repo.save @results
+    end
     handle_results @results
   end
 
