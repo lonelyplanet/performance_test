@@ -52,11 +52,11 @@ class PerformanceTestRunner
 
   def prepare_tests
     @config['tests'].map do |test|
-      number_of_test_runs = test['number-of-test-runs']
+      number_of_test_runs = test['number-of-test-runs'] || 1
       (1..number_of_test_runs).map do |i|
         {
           name: "#{test['name']} - Run #{i}",
-          cmd: "bundle exec cucumber -p #{test['profile']} #{test['feature']} 2>&1",
+          cmd: "bundle exec cucumber -p #{test['profile'] || 'performance_test'} #{test['feature']} 2>&1",
           test: test
         }
       end
@@ -117,7 +117,7 @@ class PerformanceTestRunner
     if results.all? {|r| r[:threshold_pass] && r[:feature_pass]}
       puts "Final result: All tests passed"
     else
-      abort "Final result: Some tests failed"
+      raise "Final result: Some tests failed"
     end
   end
 end
