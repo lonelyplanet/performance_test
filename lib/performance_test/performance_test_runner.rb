@@ -117,7 +117,7 @@ class PerformanceTestRunner
     if results.all? {|r| r[:threshold_pass] && r[:feature_pass]}
       puts "Final result: All tests passed"
     else
-      abort "Final result: Some tests failed"
+      raise "Final result: Some tests failed"
     end
   end
 end
