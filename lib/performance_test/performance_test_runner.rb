@@ -52,11 +52,11 @@ class PerformanceTestRunner
 
   def prepare_tests
     @config['tests'].map do |test|
-      number_of_test_runs = test['number-of-test-runs']
+      number_of_test_runs = test['number-of-test-runs'] || 1
       (1..number_of_test_runs).map do |i|
         {
           name: "#{test['name']} - Run #{i}",
-          cmd: "bundle exec cucumber -p #{test['profile']} #{test['feature']} 2>&1",
+          cmd: "bundle exec cucumber -p #{test['profile'] || 'performance_test'} #{test['feature']} 2>&1",
           test: test
         }
       end
