@@ -22,6 +22,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'diff-lcs', '~> 1.2.5'
 
   gem.add_development_dependency 'rspec', '~> 3.0.0.beta2'
-  gem.add_development_dependency 'debugger'
+  gem.add_development_dependency 'pry'
   gem.add_development_dependency 'cucumber'
 end
