@@ -1,5 +1,12 @@
 require 'spec_helper'
 
+def with_silent_stdout
+  $stdout = File.new('/dev/null', 'w')
+  yield
+ensure
+  $stdout = STDOUT
+end
+
 describe PerformanceTestRunner do
 
   before do
@@ -46,7 +53,9 @@ describe PerformanceTestRunner do
       parallel = double('parallel', run: nil)
       Parallel.should_receive(:new).with(@runner.tests, @runner.config['parallel-tasks'].to_i).and_return(parallel)
 
-      @runner.send :run_tests
+      with_silent_stdout do
+        @runner.send :run_tests
+      end
     end
   end
 
