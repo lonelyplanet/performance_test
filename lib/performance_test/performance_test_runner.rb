@@ -89,27 +89,37 @@ class PerformanceTestRunner
   end
 
   def check_results_against_thresholds(results)
-    print_seperator
-    puts "AGGREGATED RESULTS"
-
     results.each do |result|
       time_taken = result[:time_taken]
-      threshold = result[:test]['threshold'].to_i
+      threshold  = result[:test]['threshold'].to_i
 
       if !time_taken
         result[:threshold_pass] = false
-        puts "Test '#{result[:name]} failed because no timing was recorded"
+        result[:message] = "Failed: '#{result[:name]}: because no timing was recorded"
+
       elsif time_taken < (threshold * LOWER_THRESHOLD)
         result[:threshold_pass] = false
-        puts "Test '#{result[:name]}' failed because its aggregate time taken (#{time_taken}ms) was less than #{LOWER_THRESHOLD} times the threshold (#{threshold * LOWER_THRESHOLD}ms)"
+        result[:message] = "Failed: '#{result[:name]}': aggregate time taken (#{time_taken}ms) was less than #{LOWER_THRESHOLD} times the threshold (#{threshold * LOWER_THRESHOLD}ms)"
+
       elsif time_taken > threshold
         result[:threshold_pass] = false
-        puts "Test '#{result[:name]}' failed because its aggregate time taken (#{time_taken}ms) was greater than the threshold (#{threshold}ms)"
+        result[:message] = "Failed: '#{result[:name]}': aggregate time taken (#{time_taken}ms) was greater than the threshold (#{threshold}ms)"
       else
-        result[:threshold_pass] = true
-        puts "Test '#{result[:name]}' passed"
+        result[:message] = "Pass:   '#{result[:name]}'"
       end
     end
+    log_to_console results
+  end
+
+  def log_to_console(results)
+    print_seperator
+    puts "AGGREGATED RESULTS"
+    puts
+
+    # list failures first
+    results.each {|result| puts result[:message] if !result[:threshold_pass]}
+    puts
+    results.each {|result| puts result[:message] if  result[:threshold_pass]}
   end
 
   def handle_results(results)
