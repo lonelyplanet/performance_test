@@ -105,6 +105,7 @@ class PerformanceTestRunner
         result[:threshold_pass] = false
         result[:message] = "Failed: '#{result[:name]}': aggregate time taken (#{time_taken}ms) was greater than the threshold (#{threshold}ms)"
       else
+        result[:threshold_pass] = true
         result[:message] = "Pass:   '#{result[:name]}'"
       end
     end
