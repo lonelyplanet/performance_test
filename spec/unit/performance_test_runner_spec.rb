@@ -11,7 +11,7 @@ describe PerformanceTestRunner do
 
   before do
     fixtureConfigPath = File.join(File.dirname(__FILE__), '..', 'fixtures', 'example_config.yml')
-    @runner = PerformanceTestRunner.new fixtureConfigPath
+    @runner = PerformanceTestRunner.new 'chrome', fixtureConfigPath
   end
 
   describe '#load_config' do
@@ -24,7 +24,7 @@ describe PerformanceTestRunner do
 
     describe 'when the config file doesnt exist' do
       it 'an exception is raised' do
-          expect { PerformanceTestRunner.new "/some/bogus/path" }.to raise_error
+          expect { PerformanceTestRunner.new 'chrome', '/some/bogus/path' }.to raise_error
       end
     end
   end

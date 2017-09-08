@@ -9,7 +9,7 @@ describe PerformanceTest do
     ResultsRepository.should_receive(:new).and_return(repository)
 
     fixtureConfigPath = File.join(File.dirname(__FILE__), '..', 'fixtures', 'integration_test.yml')
-    @runner = PerformanceTestRunner.new fixtureConfigPath
+    @runner = PerformanceTestRunner.new 'chrome', fixtureConfigPath
     begin
       @runner.run
     rescue

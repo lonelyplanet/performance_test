@@ -6,8 +6,9 @@ require 'socket'
 class ResultsRepository
 
   def initialize(options)
+    @table   = options['results_table']
     begin
-      @conn = PGconn.new options
+      @conn = PGconn.new options['db_options']
     rescue => e
       puts "ERROR: Problem opening db connection: #{e}"
       puts e.backtrace
@@ -32,7 +33,7 @@ class ResultsRepository
 
   def save_result(result)
     @conn.exec <<-SQL
-      insert into performance_test_results
+      insert into #{@table}
       (name, actual_time_taken, timestamp, expected_time_taken, git_hash, application_version, hostname)
       values (
         '#{CGI.unescape(result[:name])}',
@@ -50,9 +51,9 @@ class ResultsRepository
   end
 
   def ensure_results_table
-    puts 'Ensuring performance_test_results table exists'
+    puts "Ensuring #{@table} table exists"
     @conn.exec <<-SQL
-      create table if not exists performance_test_results (
+      create table if not exists #{@table} (
         name varchar(100),
         actual_time_taken int,
         expected_time_taken int,

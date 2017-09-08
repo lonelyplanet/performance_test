@@ -12,14 +12,19 @@ class PerformanceTestRunner
   CONFIG_PATH = File.absolute_path(File.join('config', 'performance_test.yml'))
   LOWER_THRESHOLD = 0.3
 
-  def initialize(config_path = CONFIG_PATH)
+  def initialize(browser, config_path = CONFIG_PATH)
     if !File.exists? config_path
-      exampleConfigPath = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', 'doc', 'performance_test.yml.example'))
-      raise "ERROR: config file not found at #{config_path}.\nSee #{exampleConfigPath} for an example of a valid config file."
+      example_config_path = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', 'doc', 'performance_test.yml.example'))
+      raise "ERROR: config file not found at #{config_path}.\nSee #{example_config_path} for an example of a valid config file."
     end
+
+    @browser = browser
 
     puts "Loading config from #{config_path}"
     @config = YAML.load_file(config_path)
+
+    set_tablename_for_browser
+
     @tests  = prepare_tests
   end
 
@@ -38,7 +43,7 @@ class PerformanceTestRunner
       puts "results NOT saved to db"
     else
       puts "SAVING RESULTS"
-      results_repo = ResultsRepository.new @config['db_options']
+      results_repo = ResultsRepository.new @config
       results_repo.save @results
     end
     handle_results @results
@@ -130,5 +135,12 @@ class PerformanceTestRunner
     else
       raise "Final result: Some tests failed"
     end
+  end
+
+  def set_tablename_for_browser
+    table = 'performance_test_results'
+    table += '_chrome' if @browser == 'chrome'
+
+    @config['results_table'] = table
   end
 end
