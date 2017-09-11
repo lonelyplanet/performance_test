@@ -24,7 +24,7 @@ describe PerformanceTestRunner do
 
     describe 'when the config file doesnt exist' do
       it 'an exception is raised' do
-          expect { PerformanceTestRunner.new 'chrome', '/some/bogus/path' }.to raise_error
+          expect { PerformanceTestRunner.new 'chrome', '/some/bogus/path' }.to raise_error(RuntimeError)
       end
     end
   end

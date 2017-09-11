@@ -24,6 +24,7 @@ describe PerformanceTest do
 
     # should pass the second test
     expect(@runner.results[1][:threshold_pass]).to eq true
+    expect(@runner.results[1][:feature_pass]).to eq true
 
     # should fail the third test because the cucumber feature doesn't exist
     expect(@runner.results[2][:feature_pass]).to eq false
