@@ -1,17 +1,8 @@
-### TL;DR
+# performance_test
 
-1. Add `performance_test' to your Gemfile
-2. Write one or more cucumber features
-3. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
-4. Create a "config/performance_test.yml" file, referencing your feature(s)
-5. `bundle exec rake run_performance_tests`
+A simple gem that runs a set of cucumber features, saving the results to a database.
 
-
-### PerformanceTest
-
-PerformanceTest is a simple gem that runs a set of cucumber features, saving the results to a database.
-
- A typical use case might be to detect if changes made to an application have caused its performance to degrade over time.
+A typical use case might be to detect if changes made to an application have caused its performance to degrade over time.
 
 After installing the gem, your rails application will have a new rake task called `run_performance_tests', which is driven by a config file that you create called "config/performance_test.yml".
 
@@ -19,6 +10,26 @@ After installing the gem, your rails application will have a new rake task calle
 
 If any of the aggregated timings exceed their threshold, the rake task will return a non-zero exit code.
 
+
+### Installation & Usage
+
+#### Installation
+Add this line to your applications' Gemfile.
+
+```ruby
+gem 'performance_test', github: 'lonelyplanet/performance_test'
+```
+
+Rebundle.
+
+#### Usage
+
+1. Write one or more cucumber features
+2. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
+3. Create a "config/performance_test.yml" file, referencing your feature(s)
+4. Run the performance tests for Firefox or Chrome
+  * Firefox: `bundle exec rake run_performance_tests[firefox]` (rake arg optional for Firefox)
+  * Chrome : `bundle exec rake run_performance_tests[chrome]`
 
 ### Architecture
 

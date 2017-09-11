@@ -46,10 +46,6 @@ class ResultsRepository
     SQL
   end
 
-  def hostname
-
-  end
-
   def ensure_results_table
     puts "Ensuring #{@table} table exists"
     @conn.exec <<-SQL

@@ -11,7 +11,9 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Simple framework for performance testing}
   gem.summary       = %q{Simple framework for performance testing}
   gem.homepage      = "https://github.com/lonelyplanet/performance_test"
-  gem.files         = Dir[ 'Gemfile', 'LICENSE.txt', 'README.md', 'Rakefile', 'performance_test.gemspec', 'lib/tasks/performance_test.rake', 'lib/**/*.rb', 'spec/**/*.rb']
+  gem.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]

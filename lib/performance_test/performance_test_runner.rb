@@ -56,7 +56,7 @@ class PerformanceTestRunner
   end
 
   def prepare_tests
-    @config['tests'].map do |test|
+    @config['tests'].flat_map do |test|
       number_of_test_runs = test['number-of-test-runs'] || 1
       (1..number_of_test_runs).map do |i|
         {
@@ -65,7 +65,7 @@ class PerformanceTestRunner
           test: test
         }
       end
-    end.flatten
+    end
   end
 
   def run_tests
