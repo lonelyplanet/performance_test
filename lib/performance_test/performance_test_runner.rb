@@ -58,6 +58,8 @@ class PerformanceTestRunner
   def prepare_tests
     @config['tests'].flat_map do |test|
       number_of_test_runs = test['number-of-test-runs'] || 1
+      test['threshold'] = is_chrome? ? test['threshold_chrome'] : test['threshold_firefox']
+      ['threshold_chrome', 'threshold_firefox'].each { |k| test.delete(k) }
       (1..number_of_test_runs).map do |i|
         {
           name: "#{test['name']} - Run #{i}",
@@ -96,7 +98,7 @@ class PerformanceTestRunner
   def check_results_against_thresholds(results)
     results.each do |result|
       time_taken = result[:time_taken]
-      threshold  = result[:test]['threshold'].to_i
+      threshold = result[:test]['threshold'].to_i
 
       if !time_taken
         result[:threshold_pass] = false
