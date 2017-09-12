@@ -9,15 +9,15 @@ tests:
 - name : Fail threshold test
   number-of-test-runs: 2
   feature : features/fixtures/test_to_run.feature
-  profile: performance_test
+  profile: performance_chrome
   threshold : 1
 - name : Pass threshold test
   number-of-test-runs: 3
   feature : features/fixtures/test_to_run.feature
-  profile: performance_test
+  profile: performance_chrome
   threshold : 5000
 - name : Return non-zero error code
   number-of-test-runs: 1
   feature : features/fixtures/non_existent.feature
-  profile: performance_test
+  profile: performance_chrome
   threshold : 300000

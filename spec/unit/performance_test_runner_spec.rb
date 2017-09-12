@@ -45,6 +45,10 @@ describe PerformanceTestRunner do
       @runner.tests[0].should have_key :cmd
       @runner.tests[0].should have_key :test
     end
+
+    it 'uses the correct test profile' do
+      @runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance_chrome features/christo/example_performance.feature 2>&1'
+    end
   end
 
   describe '#run_tests' do

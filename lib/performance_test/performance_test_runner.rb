@@ -61,7 +61,7 @@ class PerformanceTestRunner
       (1..number_of_test_runs).map do |i|
         {
           name: "#{test['name']} - Run #{i}",
-          cmd: "bundle exec cucumber -p #{test['profile'] || 'performance_test'} #{test['feature']} 2>&1",
+          cmd: "bundle exec cucumber -p #{profile_for(test)} #{test['feature']} 2>&1",
           test: test
         }
       end
@@ -139,8 +139,19 @@ class PerformanceTestRunner
 
   def set_tablename_for_browser
     table = 'performance_test_results'
-    table += '_chrome' if @browser == 'chrome'
+    table += '_chrome' if is_chrome?
 
     @config['results_table'] = table
+  end
+
+  def profile_for(test)
+    return 'performance_chrome' if is_chrome?
+    return test['profile'] if test['profile']
+
+    'performance_test'
+  end
+
+  def is_chrome?
+    @browser == 'chrome'
   end
 end
