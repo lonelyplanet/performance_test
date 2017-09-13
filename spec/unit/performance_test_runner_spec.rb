@@ -11,7 +11,7 @@ describe PerformanceTestRunner do
 
   before do
     fixtureConfigPath = File.join(File.dirname(__FILE__), '..', 'fixtures', 'example_config.yml')
-    @runner = PerformanceTestRunner.new fixtureConfigPath
+    @runner = PerformanceTestRunner.new 'chrome', fixtureConfigPath
   end
 
   describe '#load_config' do
@@ -24,7 +24,7 @@ describe PerformanceTestRunner do
 
     describe 'when the config file doesnt exist' do
       it 'an exception is raised' do
-          expect { PerformanceTestRunner.new "/some/bogus/path" }.to raise_error
+          expect { PerformanceTestRunner.new 'chrome', '/some/bogus/path' }.to raise_error(RuntimeError)
       end
     end
   end
@@ -44,6 +44,10 @@ describe PerformanceTestRunner do
       @runner.tests[0].should have_key :name
       @runner.tests[0].should have_key :cmd
       @runner.tests[0].should have_key :test
+    end
+
+    it 'uses the correct test profile' do
+      @runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance_chrome features/christo/example_performance.feature 2>&1'
     end
   end
 

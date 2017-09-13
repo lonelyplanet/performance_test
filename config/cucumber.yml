@@ -5,7 +5,7 @@ require 'fileutils'
 FileUtils.mkdir_p(File.join 'target', 'reports')
 %>
 
-performance_test: >
+performance_chrome: >
   --require features/step_definitions 
   --require lib/performance_test/performance_test_steps.rb 
   --format pretty 
