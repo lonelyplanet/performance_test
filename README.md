@@ -58,12 +58,14 @@ tests:
   number-of-test-runs: 10
   feature:   features/example_performance1.feature
   profile:   performance_test
-  threshold: 300000
+  threshold_chrome: 300000
+  threshold_firefox: 300000
 - name:      Example test 2
   number-of-test-runs: 20
   feature:   features/example_performance2.feature
   profile:   performance_test
-  threshold: 300000
+  threshold_chrome: 300000
+  threshold_firefox: 300000
 ```
 
 The test parameters used are:
@@ -76,7 +78,8 @@ tests:
   number-of-test-runs:  how many times to run the test
   feature:              path to the feature that will be run (relative to the app root)
   profile:              the cucumber profile (defined by the target app, within cucumber.yml)
-  threshold:            test threshold in milliseconds
+  threshold_chrome:     test threshold in milliseconds
+  threshold_firefox:    test threshold in milliseconds
 ```
 
 
