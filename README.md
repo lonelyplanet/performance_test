@@ -28,8 +28,9 @@ Rebundle.
 2. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
 3. Create a "config/performance_test.yml" file, referencing your feature(s)
 4. Run the performance tests for Firefox or Chrome
-  * Firefox: `bundle exec rake run_performance_tests[firefox]` (rake arg optional for Firefox)
-  * Chrome : `bundle exec rake run_performance_tests[chrome]`
+  * Firefox: `bundle exec rake run_performance_tests_firefox`.
+  * Chrome : `bundle exec rake run_performance_tests_chrome_release`.
+  * Chrome Beta: `bundle exec rake run_performance_tests_chrome_beta`.
 
 ### Architecture
 
