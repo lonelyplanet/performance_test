@@ -7,29 +7,50 @@ require 'yaml'
 
 class PerformanceTestRunner
 
-  attr_accessor :config, :tests, :results
+  attr_writer :config_path
+  attr_reader :config, :tests, :results
 
-  CONFIG_PATH = File.absolute_path(File.join('config', 'performance_test.yml'))
   LOWER_THRESHOLD = 0.3
 
-  def initialize(browser, config_path = CONFIG_PATH)
-    if !File.exists? config_path
-      example_config_path = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', 'doc', 'performance_test.yml.example'))
-      raise "ERROR: config file not found at #{config_path}.\nSee #{example_config_path} for an example of a valid config file."
-    end
-
+  def initialize(browser, release = 'stable')
     @browser = browser
+    @release = release
 
-    puts "Loading config from #{config_path}"
-    @config = YAML.load_file(config_path)
-
-    set_tablename_for_browser
-
-    @tests  = prepare_tests
+    @config_path = default_config_path
   end
 
   def run
-    run_tests
+    run_setup && run_tests && persist_results
+  end
+
+  private
+
+  def default_config_path
+    File.absolute_path(
+      File.join(
+        'config', 'performance_test.yml'
+      )
+    )
+  end
+
+  def validate_config_file
+    if !File.exists? @config_path
+      example_config_path = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', 'doc', 'performance_test.yml.example'))
+      raise "ERROR: config file not found at #{@config_path}.\nSee #{example_config_path} for an example of a valid config file."
+    end
+  end
+
+  def run_setup
+    validate_config_file
+    puts "Loading config from #{@config_path}"
+    @config = YAML.load_file(@config_path)
+
+    set_tablename_for_browser_and_release
+
+    prepare_tests
+  end
+
+  def persist_results
     @results = ResultsAggregator.aggregate @tests
     check_results_against_thresholds @results
 
@@ -43,20 +64,17 @@ class PerformanceTestRunner
       puts "results NOT saved to db"
     else
       puts "SAVING RESULTS"
-      results_repo = ResultsRepository.new @config
-      results_repo.save @results
+      ResultsRepository.new(@config).save(@results)
     end
     handle_results @results
   end
-
-  private
 
   def print_seperator
     puts "#{'-'*100}\n"
   end
 
   def prepare_tests
-    @config['tests'].flat_map do |test|
+    @tests = @config['tests'].flat_map do |test|
       number_of_test_runs = test['number-of-test-runs'] || 1
       test['threshold'] = is_chrome? ? test['threshold_chrome'] : test['threshold_firefox']
       ['threshold_chrome', 'threshold_firefox'].each { |k| test.delete(k) }
@@ -139,15 +157,17 @@ class PerformanceTestRunner
     end
   end
 
-  def set_tablename_for_browser
+  def set_tablename_for_browser_and_release
     table = 'performance_test_results'
     table += '_chrome' if is_chrome?
+    table += '_beta' if is_beta?
 
     @config['results_table'] = table
   end
 
   def profile_for(test)
     return 'performance_chrome' if is_chrome?
+    return 'performance_test' if is_firefox?
     return test['profile'] if test['profile']
 
     'performance_test'
@@ -155,5 +175,13 @@ class PerformanceTestRunner
 
   def is_chrome?
     @browser == 'chrome'
+  end
+
+  def is_firefox?
+    @browser == 'firefox'
+  end
+
+  def is_beta?
+    @release == 'beta'
   end
 end

@@ -11,3 +11,10 @@ performance_chrome: >
   --format pretty 
   --format html 
   --out target/reports/integration-test.html
+
+performance_test: >
+  --require features/step_definitions 
+  --require lib/performance_test/performance_test_steps.rb 
+  --format pretty 
+  --format html 
+  --out target/reports/integration-test.html
