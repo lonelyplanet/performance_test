@@ -13,9 +13,8 @@ describe PerformanceTestRunner do
     File.join(File.dirname(__FILE__), '..', 'fixtures', 'example_config.yml')
   end
 
-  let(:firefox_runner) { PerformanceTestRunner.new 'firefox', 'stable' }
-  let(:chrome_release_runner) { PerformanceTestRunner.new 'chrome', 'stable' }
-  let(:chrome_beta_runner) { PerformanceTestRunner.new 'chrome', 'beta' }
+  let(:chrome_release_runner) { PerformanceTestRunner.new 'stable' }
+  let(:chrome_beta_runner)    { PerformanceTestRunner.new 'beta'   }
 
 
   describe 'configuration file' do
@@ -54,17 +53,6 @@ describe PerformanceTestRunner do
     end
 
     describe 'setting the table for persistence' do
-      describe 'when using firefox' do
-        before do
-          firefox_runner.config_path = fixture_config_path
-          firefox_runner.send(:run_setup)
-        end
-
-        it 'persists to performance_test_results' do
-          expect(firefox_runner.config['results_table']).to eq 'performance_test_results'
-        end
-      end
-
       describe 'when using chrome release' do
         before do
           chrome_release_runner.config_path = fixture_config_path
@@ -89,17 +77,6 @@ describe PerformanceTestRunner do
     end
 
     describe 'preparing the tests' do
-      describe 'when using firefox' do
-        before do
-          firefox_runner.config_path = fixture_config_path
-          firefox_runner.send(:run_setup)
-        end
-
-        it 'uses the correct test profile' do
-          firefox_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance_test features/christo/example_performance.feature 2>&1'
-        end
-      end
-
       describe 'when using chrome release' do
         before do
           chrome_release_runner.config_path = fixture_config_path
@@ -107,7 +84,7 @@ describe PerformanceTestRunner do
         end
 
         it 'uses the correct test profile' do
-          chrome_release_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance_chrome features/christo/example_performance.feature 2>&1'
+          chrome_release_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1'
         end
       end
 
@@ -118,7 +95,7 @@ describe PerformanceTestRunner do
         end
 
         it 'uses the correct test profile' do
-          chrome_beta_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance_chrome features/christo/example_performance.feature 2>&1'
+          chrome_beta_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1'
         end
       end
 

@@ -24,27 +24,8 @@ describe PerformanceTest do
     ResultsRepository.should_receive(:new).and_return(repository)
   end
 
-  describe 'when running against firefox' do
-    let(:runner) { PerformanceTestRunner.new 'firefox', 'stable' }
-    before do
-      begin
-        runner.config_path = fixture_config_path
-        runner.run
-      rescue
-      end
-    end
-
-    it 'uses the correct threshold' do
-      expect(runner.results[0][:test]['threshold']).to eq 1
-      expect(runner.results[1][:test]['threshold']).to eq 6000
-      expect(runner.results[2][:test]['threshold']).to eq 400000
-    end
-
-    include_examples "records the correct results"
-  end
-
   describe 'when running against chrome' do
-    let(:runner) { PerformanceTestRunner.new 'chrome', 'stable' }
+    let(:runner) { PerformanceTestRunner.new 'stable' }
     before do
       begin
         runner.config_path = fixture_config_path

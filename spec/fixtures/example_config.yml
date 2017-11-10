@@ -9,12 +9,10 @@ tests:
 - name : Example test
   number-of-test-runs: 4
   feature : features/christo/example_performance.feature
-  profile: performance_chrome
-  threshold_firefox : 300000
-  threshold_chrome : 200000
-- name : Example test 2
+  profile: performance
+  threshold: 200000
+- name: Example test 2
   number-of-test-runs: 2
-  feature : features/christo/example_performance2.feature
-  profile: performance_chrome
-  threshold_firefox : 300000
-  threshold_chrome : 200000
+  feature: features/christo/example_performance2.feature
+  profile: performance
+  threshold: 200000
