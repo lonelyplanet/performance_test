@@ -9,15 +9,18 @@ tests:
 - name : Fail threshold test
   number-of-test-runs: 2
   feature : features/fixtures/test_to_run.feature
-  profile: performance_test
-  threshold : 1
+  profile: performance_chrome
+  threshold_firefox : 1
+  threshold_chrome : 1
 - name : Pass threshold test
   number-of-test-runs: 3
   feature : features/fixtures/test_to_run.feature
-  profile: performance_test
-  threshold : 5000
+  profile: performance_chrome
+  threshold_firefox : 6000
+  threshold_chrome : 5000
 - name : Return non-zero error code
   number-of-test-runs: 1
   feature : features/fixtures/non_existent.feature
-  profile: performance_test
-  threshold : 300000
+  profile: performance_chrome
+  threshold_firefox : 400000
+  threshold_chrome : 300000

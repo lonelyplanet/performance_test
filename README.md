@@ -1,17 +1,8 @@
-### TL;DR
+# performance_test
 
-1. Add `performance_test' to your Gemfile
-2. Write one or more cucumber features
-3. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
-4. Create a "config/performance_test.yml" file, referencing your feature(s)
-5. `bundle exec rake run_performance_tests`
+A simple gem that runs a set of cucumber features, saving the results to a database.
 
-
-### PerformanceTest
-
-PerformanceTest is a simple gem that runs a set of cucumber features, saving the results to a database.
-
- A typical use case might be to detect if changes made to an application have caused its performance to degrade over time.
+A typical use case might be to detect if changes made to an application have caused its performance to degrade over time.
 
 After installing the gem, your rails application will have a new rake task called `run_performance_tests', which is driven by a config file that you create called "config/performance_test.yml".
 
@@ -19,6 +10,27 @@ After installing the gem, your rails application will have a new rake task calle
 
 If any of the aggregated timings exceed their threshold, the rake task will return a non-zero exit code.
 
+
+### Installation & Usage
+
+#### Installation
+Add this line to your applications' Gemfile.
+
+```ruby
+gem 'performance_test', github: 'lonelyplanet/performance_test'
+```
+
+Rebundle.
+
+#### Usage
+
+1. Write one or more cucumber features
+2. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
+3. Create a "config/performance_test.yml" file, referencing your feature(s)
+4. Run the performance tests for Firefox or Chrome
+  * Firefox: `bundle exec rake run_performance_tests_firefox`.
+  * Chrome : `bundle exec rake run_performance_tests_chrome_release`.
+  * Chrome Beta: `bundle exec rake run_performance_tests_chrome_beta`.
 
 ### Architecture
 
@@ -47,12 +59,14 @@ tests:
   number-of-test-runs: 10
   feature:   features/example_performance1.feature
   profile:   performance_test
-  threshold: 300000
+  threshold_chrome: 300000
+  threshold_firefox: 300000
 - name:      Example test 2
   number-of-test-runs: 20
   feature:   features/example_performance2.feature
   profile:   performance_test
-  threshold: 300000
+  threshold_chrome: 300000
+  threshold_firefox: 300000
 ```
 
 The test parameters used are:
@@ -65,7 +79,8 @@ tests:
   number-of-test-runs:  how many times to run the test
   feature:              path to the feature that will be run (relative to the app root)
   profile:              the cucumber profile (defined by the target app, within cucumber.yml)
-  threshold:            test threshold in milliseconds
+  threshold_chrome:     test threshold in milliseconds
+  threshold_firefox:    test threshold in milliseconds
 ```
 
 
