@@ -28,9 +28,8 @@ Rebundle.
 2. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
 3. Create a "config/performance_test.yml" file, referencing your feature(s)
 4. Run the performance tests for Firefox or Chrome
-  * Firefox: `bundle exec rake run_performance_tests_firefox`.
-  * Chrome : `bundle exec rake run_performance_tests_chrome_release`.
-  * Chrome Beta: `bundle exec rake run_performance_tests_chrome_beta`.
+  * Chrome : `bundle exec rake run_performance_tests_release`.
+  * Chrome Beta: `bundle exec rake run_performance_tests_beta`.
 
 ### Architecture
 
@@ -58,15 +57,13 @@ tests:
 - name:      Example test 1
   number-of-test-runs: 10
   feature:   features/example_performance1.feature
-  profile:   performance_test
-  threshold_chrome: 300000
-  threshold_firefox: 300000
+  profile:   performance
+  threshold: 300000
 - name:      Example test 2
   number-of-test-runs: 20
   feature:   features/example_performance2.feature
-  profile:   performance_test
-  threshold_chrome: 300000
-  threshold_firefox: 300000
+  profile:   performance
+  threshold: 300000
 ```
 
 The test parameters used are:
@@ -79,8 +76,7 @@ tests:
   number-of-test-runs:  how many times to run the test
   feature:              path to the feature that will be run (relative to the app root)
   profile:              the cucumber profile (defined by the target app, within cucumber.yml)
-  threshold_chrome:     test threshold in milliseconds
-  threshold_firefox:    test threshold in milliseconds
+  threshold:     test threshold in milliseconds
 ```
 
 
