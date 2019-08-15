@@ -10,10 +10,10 @@ After installing the gem, your rails application will have a new rake task calle
 
 If any of the aggregated timings exceed their threshold, the rake task will return a non-zero exit code.
 
+## Installation & Usage
 
-### Installation & Usage
+### Installation
 
-#### Installation
 Add this line to your applications' Gemfile.
 
 ```ruby
@@ -22,20 +22,21 @@ gem 'performance_test', github: 'lonelyplanet/performance_test'
 
 Rebundle.
 
-#### Usage
+### Usage
 
 1. Write one or more cucumber features
 2. Top and tail each feature with the steps "When I start the timer" and "Then I stop the timer"
 3. Create a "config/performance_test.yml" file, referencing your feature(s)
 4. Run the performance tests for Firefox or Chrome
-  * Chrome : `bundle exec rake run_performance_tests_release`.
-  * Chrome Beta: `bundle exec rake run_performance_tests_beta`.
 
-### Architecture
+* Chrome : `bundle exec rake run_performance_tests_release`.
+* Chrome Beta: `bundle exec rake run_performance_tests_beta`.
 
-![all architects are frustrated artists](https://github.com/lonelyplanet/performance_test/blob/master/PerformanceTestGem.png)
+## Architecture
 
-### Configuration
+![all architects are frustrated artists](https://raw.githubusercontent.com/lonelyplanet/performance_test/master/PerformanceTestGem.png)
+
+## Configuration
 
 Configuration is specified in a yaml file within your application ("config/performance_test.yml").
 
@@ -45,7 +46,7 @@ If the environment variables `APPLICATION_VERSION` and/or `BUILD_NUMBER` are def
 
 Example yaml config:
 
-```
+```yaml
 ---
 parallel-tasks:      2
 db_options:
@@ -67,7 +68,8 @@ tests:
 ```
 
 The test parameters used are:
-```
+
+```yaml
 parallel-tasks:      how many tests to run in parallel
 db_options:          connection settings to save the results
 
@@ -79,10 +81,8 @@ tests:
   threshold:     test threshold in milliseconds
 ```
 
-
-### Pass and Fail
+## Pass and Fail
 
 Each test is run a number of times (specified by the config parameter `number-of-test-runs`), and the threshold is applied to the aggregate of the individual test timings.
 
 The threshold determines the maximum time allowed for each test, and a pass is determined by whether the 90th percentile of the test results stays within the bounds of the threshold.
-
