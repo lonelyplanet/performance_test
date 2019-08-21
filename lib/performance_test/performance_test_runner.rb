@@ -88,6 +88,7 @@ class PerformanceTestRunner
   def run_tests
     time_taken_re = /TIME_TAKEN ([0-9]+)MS/
 
+    p @tests
     Parallel.new(@tests, @config['parallel-tasks'].to_i).run
 
     @tests.collect do |test|
