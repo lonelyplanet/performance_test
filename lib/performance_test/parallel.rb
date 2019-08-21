@@ -33,6 +33,7 @@ class Parallel
         @task_number += 1
         puts "Executing: #{command[:cmd]}"
         out = IO.popen(command[:cmd])
+        out.pipe $stdout
         put_w_time "[#{command[:name]}] started; #{@commands.length} jobs left to start."
         command[:start] = Time.now
         command[:out] = out
