@@ -78,7 +78,7 @@ class PerformanceTestRunner
       (1..number_of_test_runs).map do |i|
         {
           name: "#{test['name']} - Run #{i}",
-          cmd: "bundle exec cucumber -p performance #{test['feature']} 2>&1",
+          cmd: "bundle exec cucumber -p performance #{test['feature']} 2>&1 | grep TIME_TAKEN",
           test: test
         }
       end
