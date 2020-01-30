@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 STDOUT.sync = true
 
 require 'performance_test/results_repository'
@@ -6,7 +8,6 @@ require 'performance_test/results_aggregator'
 require 'yaml'
 
 class PerformanceTestRunner
-
   attr_writer :config_path
   attr_reader :config, :tests, :results
 
@@ -33,7 +34,7 @@ class PerformanceTestRunner
   end
 
   def validate_config_file
-    if !File.exists? @config_path
+    unless File.exist? @config_path
       example_config_path = File.absolute_path(File.join(File.dirname(__FILE__), '..', '..', 'doc', 'performance_test.yml.example'))
       raise "ERROR: config file not found at #{@config_path}.\nSee #{example_config_path} for an example of a valid config file."
     end
@@ -54,22 +55,22 @@ class PerformanceTestRunner
     check_results_against_thresholds @results
 
     print_seperator
-    puts "RAW RESULTS"
+    puts 'RAW RESULTS'
     puts @results
 
     print_seperator
 
     if ENV['NO_DB_RESULTS']
-      puts "results NOT saved to db"
+      puts 'results NOT saved to db'
     else
-      puts "SAVING RESULTS"
+      puts 'SAVING RESULTS'
       ResultsRepository.new(@config).save(@results)
     end
     handle_results @results
   end
 
   def print_seperator
-    puts "#{'-'*100}\n"
+    puts "#{'-' * 100}\n"
   end
 
   def prepare_tests
@@ -104,7 +105,6 @@ class PerformanceTestRunner
       end
 
       puts response
-
     end
 
     @tests
@@ -136,21 +136,21 @@ class PerformanceTestRunner
 
   def log_to_console(results)
     print_seperator
-    puts "AGGREGATED RESULTS"
+    puts 'AGGREGATED RESULTS'
     puts
 
     # list failures first
-    results.each {|result| puts result[:message] if !result[:threshold_pass]}
+    results.each { |result| puts result[:message] unless result[:threshold_pass] }
     puts
-    results.each {|result| puts result[:message] if  result[:threshold_pass]}
+    results.each { |result| puts result[:message] if result[:threshold_pass] }
   end
 
   def handle_results(results)
     print_seperator
-    if results.all? {|r| r[:threshold_pass] && r[:feature_pass]}
-      puts "Final result: All tests passed"
+    if results.all? { |r| r[:threshold_pass] && r[:feature_pass] }
+      puts 'Final result: All tests passed'
     else
-      raise "Final result: Some tests failed"
+      raise 'Final result: Some tests failed'
     end
   end
 

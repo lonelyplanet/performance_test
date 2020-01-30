@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-RSpec.shared_examples "records the correct results" do
-  it "should record the correct results" do
+RSpec.shared_examples 'records the correct results' do
+  it 'should record the correct results' do
     # should fail the first test because the threshold is exceeded
     expect(runner.results[0][:threshold_pass]).to eq false
 
@@ -15,7 +17,6 @@ RSpec.shared_examples "records the correct results" do
 end
 
 describe PerformanceTest do
-
   let(:fixture_config_path) { File.join(File.dirname(__FILE__), '..', 'fixtures', 'integration_test.yml') }
 
   before do
@@ -27,19 +28,17 @@ describe PerformanceTest do
   describe 'when running against chrome' do
     let(:runner) { PerformanceTestRunner.new 'stable' }
     before do
-      begin
-        runner.config_path = fixture_config_path
-        runner.run
-      rescue
-      end
+      runner.config_path = fixture_config_path
+      runner.run
+    rescue StandardError
     end
 
     it 'uses the correct threshold' do
       expect(runner.results[0][:test]['threshold']).to eq 1
       expect(runner.results[1][:test]['threshold']).to eq 5000
-      expect(runner.results[2][:test]['threshold']).to eq 300000
+      expect(runner.results[2][:test]['threshold']).to eq 300_000
     end
 
-    include_examples "records the correct results"
+    include_examples 'records the correct results'
   end
 end

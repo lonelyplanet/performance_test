@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 def with_silent_stdout
@@ -8,14 +10,12 @@ ensure
 end
 
 describe PerformanceTestRunner do
-
   let(:fixture_config_path) do
     File.join(File.dirname(__FILE__), '..', 'fixtures', 'example_config.yml')
   end
 
   let(:chrome_release_runner) { PerformanceTestRunner.new 'stable' }
   let(:chrome_beta_runner)    { PerformanceTestRunner.new 'beta'   }
-
 
   describe 'configuration file' do
     it 'sets a sensible default' do
@@ -24,9 +24,9 @@ describe PerformanceTestRunner do
 
     it 'exposes a writer for custom path' do
       custom_path = '/path/to/config.yml'
-      expect {
+      expect do
         chrome_release_runner.config_path = custom_path
-      }.to change {
+      end.to change {
         chrome_release_runner.instance_variable_get(:@config_path)
       }.to(custom_path)
     end
@@ -48,7 +48,7 @@ describe PerformanceTestRunner do
       end
 
       it 'sets and exposes configuration' do
-        expect(chrome_release_runner.config.keys).to eq ['parallel-tasks','db_options','tests','results_table']
+        expect(chrome_release_runner.config.keys).to eq %w[parallel-tasks db_options tests results_table]
       end
     end
 
@@ -84,7 +84,7 @@ describe PerformanceTestRunner do
         end
 
         it 'uses the correct test profile' do
-          chrome_release_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1'
+          chrome_release_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1 | grep TIME_TAKEN'
         end
       end
 
@@ -95,7 +95,7 @@ describe PerformanceTestRunner do
         end
 
         it 'uses the correct test profile' do
-          chrome_beta_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1'
+          chrome_beta_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1 | grep TIME_TAKEN'
         end
       end
 
@@ -110,12 +110,12 @@ describe PerformanceTestRunner do
         end
 
         it 'returns 4 instances of test "Example test"' do
-          tests = chrome_release_runner.tests.select {|test| test[:test]["name"] == "Example test"}
+          tests = chrome_release_runner.tests.select { |test| test[:test]['name'] == 'Example test' }
           tests.length.should == 4
         end
 
         it 'returns 2 instances of test "Example test 2"' do
-          tests = chrome_release_runner.tests.select {|test| test[:test]["name"] == "Example test 2"}
+          tests = chrome_release_runner.tests.select { |test| test[:test]['name'] == 'Example test 2' }
           tests.length.should == 2
         end
 

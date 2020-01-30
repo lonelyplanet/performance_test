@@ -1,32 +1,31 @@
+# frozen_string_literal: true
+
 require 'pg'
 require 'json'
 require 'cgi'
 require 'socket'
 
 class ResultsRepository
-
   def initialize(options)
-    @table   = options['results_table']
+    @table = options['results_table']
     begin
-      @conn = PGconn.new options['db_options']
-    rescue => e
+      @conn = PG::Connection.new options['db_options']
+    rescue StandardError => e
       puts "ERROR: Problem opening db connection: #{e}"
       puts e.backtrace
     end
     ensure_results_table
     @hostname = Socket.gethostname
-    @timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    @timestamp = Time.now.strftime('%Y-%m-%d %H:%M:%S')
   end
 
-  def save results
-    begin
-      puts "Saving test results to the database"
-      results.each {|r| save_result(r) if r[:feature_pass] and r[:time_taken] }
-      puts "Test results saved."
-    rescue => e
-      puts "ERROR: Problem saving performance-test results: #{e}"
-      puts e.backtrace
-    end
+  def save(results)
+    puts 'Saving test results to the database'
+    results.each { |r| save_result(r) if r[:feature_pass] && r[:time_taken] }
+    puts 'Test results saved.'
+  rescue StandardError => e
+    puts "ERROR: Problem saving performance-test results: #{e}"
+    puts e.backtrace
   end
 
   private
@@ -62,5 +61,4 @@ class ResultsRepository
       );
     SQL
   end
-
 end
