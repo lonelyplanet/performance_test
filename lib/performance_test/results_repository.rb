@@ -8,7 +8,7 @@ class ResultsRepository
   def initialize(options)
     @table   = options['results_table']
     begin
-      @conn = PGconn.new options['db_options']
+      @conn = PG::Connection.new options['db_options']
     rescue => e
       puts "ERROR: Problem opening db connection: #{e}"
       puts e.backtrace

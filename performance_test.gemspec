@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency 'rake'
-  gem.add_runtime_dependency 'pg'
+  gem.add_runtime_dependency 'pg', '~> 1.0'
 
   gem.add_runtime_dependency 'diff-lcs', '~> 1.2.5'
 
