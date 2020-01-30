@@ -84,7 +84,7 @@ describe PerformanceTestRunner do
         end
 
         it 'uses the correct test profile' do
-          chrome_release_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1'
+          chrome_release_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1 | grep TIME_TAKEN'
         end
       end
 
@@ -95,7 +95,7 @@ describe PerformanceTestRunner do
         end
 
         it 'uses the correct test profile' do
-          chrome_beta_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1'
+          chrome_beta_runner.tests[0][:cmd].should eq 'bundle exec cucumber -p performance features/christo/example_performance.feature 2>&1 | grep TIME_TAKEN'
         end
       end
 
